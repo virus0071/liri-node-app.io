@@ -4,10 +4,10 @@ var fs = require("fs");
 var action = process.argv[2];
 var value = process.argv[3];
 var Twitter = require("twitter");
-var Spotify = require("spotify");
+var spotify = require("spotify");
 var keys = require("keys.js");
 var request = require("request");
-var spotifySong = new Spotify(keys.spotify);
+
 var client = new Twitter(keys.twitter);
 var params = {screen_name: "virus00712"};
 
@@ -16,18 +16,22 @@ switch (action) {
     tweets();
     break;
     
-    case "spotify-this-song":
+    case "spotify":
     spotifyThisSong(value);
     break;
 
-    case "movie-this":
+    case "movie":
     omdbThisMovie(value);
     break;
 
     case "do-what-it-says":
     random();
     break;
+
+    
 }
+
+
 
 function tweets() {
     client.get("statuses/user_timeline/", params, function (error, tweets, response) {
@@ -45,14 +49,18 @@ function tweets() {
                     "***********************" +i +"***************************** \r\n";
                 console.log(tResult);
             }
-        }
-    })
     
-    fs.appendFile("log.txt", ("**************************************************** \r\n"), function(err,data){
+    
+    fs.appendFile("log.txt", ("**************************************************** \r\n" + 
+        tweets[i].text + "\r\n" +
+        tweets[i].created_at + "\r\n" +
+        "***********************" +i +"***************************** \r\n"), function(err,data){
         if (err) {
             return console.log(err);
         }
-    })
+    });
+}
+});
 }
 
 
@@ -75,7 +83,16 @@ function omdbThisMovie(value) {
             console.log("Actors: " + JSON.parse(body).Actors);
             console.log("****************************************************");
 
-            fs.append("log.txt", "****************************************************", function(error){
+            fs.append("log.txt", "**************************************************** \r\n" +
+            "Title: " + JSON.parse(body).Title + "\r\n" +
+            "Year: " + JSON.parse(body).Year + "\r\n" +
+            "IMDB Rating: " + JSON.parse(body).imdbRating + "\r\n" +
+            "Rotten Tomatoes Rating: " + JSON.parse(body).tomatoRating + "\r\n" + 
+            "Country: " + JSON.parse(body).Country + "\r\n" +
+            "Language: " + JSON.parse(body).Language + "\r\n" +
+            "Plot: " + JSON.parse(body).Plot + "\r\n" +
+            "Actors: " + JSON.parse(body).Actors + "\r\n" +
+            "****************************************************" + "\r\n", function(error){
                 if (error) {
                     throw error;
                 };
@@ -93,7 +110,7 @@ function spotifyThisSong(value){
     if (value == null){
         value = "Walk this way";
     }
-    spotifySong.search({type: "track", value}, function (error, body, response){
+    spotify.search({type: "track", query: value}, function (error, body, response){
         if (!error && response.statusCode == 200) {
             console.log("****************************************************");
             console.log("Artist(s): " + JSON.parse(body).tracks.items[0].artists[0].name);
@@ -102,7 +119,12 @@ function spotifyThisSong(value){
             console.log("Album: " + JSON.parse(body).tracks.items[0].album.name);
             console.log("****************************************************");
 
-            fs.appendFile("log.txt", "**************************************************** \r\n", function (err){
+            fs.appendFile("log.txt", "**************************************************** \r\n" +
+            "Artist(s): " + JSON.parse(body).tracks.items[0].artists[0].name + "\r\n" +
+            "Song Name:  " + JSON.parse(body).tracks.items[0].name + "\r\n" +
+            "Preview Link: " + JSON.parse(body).tracks.items[0].preview_url + "\r\n" +
+            "Album: " + JSON.parse(body).tracks.items[0].album.name + "\r\n" + 
+            "****************************************************" + "\r\n", function (err){
                 if (err) {
                     throw err;
                 };
