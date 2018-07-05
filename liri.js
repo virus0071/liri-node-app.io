@@ -37,6 +37,7 @@ switch (action) {
         random();
         break;
 
+    default: console.log("liri.js + case name (my-tweets; spotify; movie; do-what-it-says) + (movie/song name WITH QUOTATION MARKS)");
 
 }
 
