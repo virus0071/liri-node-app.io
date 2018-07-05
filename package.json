@@ -1,0 +1,25 @@
+{
+  "name": "10",
+  "version": "1.0.0",
+  "description": "",
+  "main": "key.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "keys.js": "^1.0.2",
+    "node-spotify-api": "^1.0.7",
+    "request": "^2.87.0",
+    "search": "^1.0.0",
+    "spotify": "^0.3.0",
+    "spotify-api": "0.0.0",
+    "text": "^0.1.0",
+    "throw": "^1.1.0",
+    "tweeter": "0.0.4",
+    "twitter": "^1.7.1"
+  }
+}
